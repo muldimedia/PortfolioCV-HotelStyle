@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Keycard Portfolio</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body class="dark-mode">
+    <!-- Loader -->
+    <div id="loader">
+      <div class="loader-door"></div>
+      <p class="loader-text">Welcome...</p>
+    </div>
+
+    <!-- Scanner Strip -->
+    <div class="scanner-strip"></div>
+
+    <!-- Mode Toggle -->
+    <button
+      class="mode-toggle"
+      id="modeToggle"
+      aria-label="Toggle Dark/Light Mode"
+    >
+      🌞
+    </button>
+
+    <!-- Card Container -->
+    <div class="card-container">
+      <!-- Keycard -->
+      <div class="keycard" id="keycard" onclick="insertCard()">
+        <img
+          src="images/profile_image.webp"
+          alt="Profile"
+          class="profile-photo"
+        />
+        <h1>Franko Hysenllari</h1>
+        <p>“Insert to explore.”</p>
+      </div>
+
+      <!-- Menu Card -->
+      <div class="menu-card" id="menuCard">
+        <ul class="menu">
+          <li onclick="openSection('home')">🏠 Home</li>
+          <li onclick="openSection('projects')">💻 Projects</li>
+          <li onclick="openSection('education')">🎓 Education</li>
+          <li onclick="openSection('experience')">💼 Experience</li>
+        </ul>
+        <button class="back-btn" onclick="backToKeycard()">
+          ← Back to Keycard
+        </button>
+      </div>
+    </div>
+
+    <!-- Sections -->
+    <div class="section" id="home">
+      <div class="letter">
+        <h2>🏠 Home</h2>
+        <p>Welcome to my digital portfolio.</p>
+        <button class="back-btn" onclick="closeSection()">
+          ← Back to Menu
+        </button>
+      </div>
+    </div>
+
+    <div class="section" id="projects">
+      <div class="letter">
+        <h2>💻 Projects</h2>
+        <p>Here are some of my recent works.</p>
+        <button class="back-btn" onclick="closeSection()">
+          ← Back to Menu
+        </button>
+      </div>
+    </div>
+
+    <div class="section" id="education">
+      <div class="letter">
+        <h2>🎓 Education</h2>
+        <p>Academic background and certifications.</p>
+        <button class="back-btn" onclick="closeSection()">
+          ← Back to Menu
+        </button>
+      </div>
+    </div>
+
+    <div class="section" id="experience">
+      <div class="letter">
+        <h2>💼 Experience</h2>
+        <p>Work, internships, and relevant history.</p>
+        <button class="back-btn" onclick="closeSection()">
+          ← Back to Menu
+        </button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

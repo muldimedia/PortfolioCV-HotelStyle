@@ -1,0 +1,382 @@
+:root {
+  /* Dark Mode Palette */
+  --bg-color: #121212;
+  --text-color: #fff;
+  --card-bg: linear-gradient(to left, #232323, #5a5a5a);
+  --card-border: #1a1a1a;
+  --menu-bg: #1a1a1a;
+  --menu-border: #111;
+  --menu-item-bg: #222;
+  --menu-item-hover-bg: #37f5ff;
+  --menu-item-hover-color: #000;
+  --scanner-strip: #37f5ff;
+  --letter-bg: #222;
+  --back-btn-bg: #37f5ff;
+  --back-btn-color: #111;
+}
+
+body.light-mode {
+  /* Light Mode Palette */
+  --bg-color: #e6f0fa;
+  --text-color: #2a3a5a;
+  --card-bg: linear-gradient(to left, #f0f4f8, #d7e9fc);
+  --card-border: #a3c0e5;
+  --menu-bg: #e6f0fa;
+  --menu-border: #aac1e7;
+  --menu-item-bg: #d2e3f7;
+  --menu-item-hover-bg: #395a9c;
+  --menu-item-hover-color: #f0f4f8;
+  --scanner-strip: #395a9c;
+  --letter-bg: #d2e3f7;
+  --back-btn-bg: #395a9c;
+  --back-btn-color: #f0f4f8;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background: var(--bg-color);
+  color: var(--text-color);
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  padding-top: 60px;
+}
+
+#modeToggle {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  background: var(--scanner-strip);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  font-size: 22px;
+  color: var(--back-btn-color);
+  z-index: 999;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+#modeToggle:hover {
+  background: var(--menu-item-hover-bg);
+  color: var(--menu-item-hover-color);
+}
+
+#loader {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-color);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader-door {
+  width: 250px;
+  height: 20px;
+  background: linear-gradient(to right, #555, #888);
+  animation: slideDoor 2s ease forwards;
+  border-radius: 5px;
+  margin-bottom: 1em;
+}
+
+.loader-text {
+  color: #aaa;
+  font-size: 2em;
+  opacity: 0;
+  animation: fadeIn 2s ease forwards 1s;
+}
+
+@keyframes slideDoor {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.scanner-strip {
+  width: 310px;
+  height: 10px;
+  background: var(--scanner-strip);
+  border-radius: 10px;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+}
+
+.card-container {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 60px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.keycard,
+.menu-card {
+  width: 300px;
+  height: 500px;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: transform 1.7s ease, opacity 0.8s ease;
+  border-radius: 20px;
+  overflow: hidden;
+  z-index: 4;
+}
+
+.keycard {
+  background: var(--card-bg);
+  border: 4px solid var(--card-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8em;
+  padding: 1em;
+  cursor: pointer;
+}
+
+.keycard::after,
+.menu-card::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 30px;
+  height: 100%;
+  background: black;
+  border-radius: 0 10px 10px 0;
+  z-index: 4;
+}
+
+.profile-photo {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid darkgray;
+}
+
+.keycard.inserted {
+  animation: slideInToScanner 1.7s forwards;
+  cursor: default;
+}
+
+.menu-card {
+  background: var(--menu-bg);
+  color: var(--text-color);
+  padding: 1.2em 1.2em 2em 1.2em;
+  flex-direction: column;
+  justify-content: center;
+  border: 4px solid var(--menu-border);
+  opacity: 0;
+  pointer-events: none;
+  display: flex;
+  transform: translate(-50%, -140%);
+}
+
+.menu-card.show {
+  opacity: 1;
+  pointer-events: auto;
+  animation: slideOutOfScanner 1.7s forwards;
+}
+
+.menu-card.backing {
+  animation: slideMenuBackIntoScanner 1.7s forwards;
+  pointer-events: none;
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+  margin-top: 1.5em;
+}
+
+.menu li {
+  background: var(--menu-item-bg);
+  padding: 15px;
+  margin: 10px 20px;
+  text-align: center;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.5s ease, color 0.5s ease;
+  user-select: none;
+  color: var(--text-color);
+}
+
+.menu li:hover {
+  background: var(--menu-item-hover-bg);
+  color: var(--menu-item-hover-color);
+}
+
+.section {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--menu-bg);
+  padding: 2em;
+  z-index: 99;
+  overflow-y: auto;
+  color: var(--text-color);
+}
+
+.section.active {
+  display: block;
+  animation: fadeSlideIn 1.3s ease forwards;
+}
+
+.section.closing {
+  animation: fadeSlideOut 0.8s ease forwards;
+}
+
+.letter {
+  max-width: 600px;
+  margin: 0 auto;
+  background: var(--letter-bg);
+  padding: 2em;
+  border-radius: 12px;
+  color: var(--text-color);
+}
+
+.back-btn {
+  margin-top: 2em;
+  background: var(--back-btn-bg);
+  color: var(--back-btn-color);
+  border: none;
+  padding: 0.7em 1.5em;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+  align-self: center;
+}
+
+.back-btn:hover {
+  background: var(--menu-item-hover-bg);
+  color: var(--menu-item-hover-color);
+}
+
+@keyframes slideInToScanner {
+  0% {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -140%) scale(0.6);
+    opacity: 0;
+  }
+}
+
+@keyframes slideOutOfScanner {
+  0% {
+    transform: translate(-50%, -140%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(-50%);
+    opacity: 1;
+  }
+}
+
+@keyframes slideMenuBackIntoScanner {
+  0% {
+    transform: translateX(-50%);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -140%);
+    opacity: 0;
+  }
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeSlideOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+
+.keycard.slideOut {
+  animation: slideKeycardOutFromStrip 1.7s forwards;
+}
+
+@keyframes slideKeycardOutFromStrip {
+  0% {
+    transform: translate(-50%, -140%) scale(0.6);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, 0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* RESPONSIVE for phones - keycard shape */
+
+@media (max-width: 480px) {
+  .keycard {
+    width: 75vw;
+    height: 70vh;
+    max-height: none;
+    border-radius: 12px;
+    padding: 1em;
+    flex-direction: row;
+    align-items: center;
+    gap: 1em;
+  }
+
+  .profile-photo {
+    width: 30%;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  .keycard > *:not(.profile-photo) {
+    flex: 1;
+  }
+}
